@@ -51,23 +51,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user, String agentId) {
+    public User saveUser(User user) {
         //Get agentId from the loggedIn user or admin
 
         if(user == null) logger.info("User is null and can't be saved");
-        logger.info("Saving new user to database {} ", user.getUserName());
         try{
+        logger.info("Saving new user to database {} ", user.getUserName());
             //Need to encode the password before saving to db
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-
             //Default values for new user
-            user.setActive(true);
-            Optional<Role> roleOptional = roleRepository.findById("635188fa4806844f891f533a");
-            Role role = roleOptional.get();
-            user.getRoles().add(role);
-
             //Generate email
             user.setEmailId(GenerateEmail.generateEmail(user.getFirstName(), user.getLastName()));
+//            Optional<Role> roleOptional = roleRepository.findById("635188fa4806844f891f533a");
+//            Role role = roleOptional.get();
+//                System.out.println(role.getRoleName());
+//            user.getRoles().add(role);
+            user.setActive(true);
+            user.setNotLocked(true);
+            user.setPhone("");
+            user.setProfileImageUrl("");
+            user.setCreatedBy("Solomon");
+            user.setCreatedOn(new Date());
+            user.setJoinDate(new Date());
+            user.setUpdatedBy(null);
+            user.setUpdatedOn(null);
+            user.setLastLoginDate(null);
+            user.setLastLoginDateDisplay(null);
+
             userRepository.save(user);
         } catch (Exception exception){
             logger.info(exception.getMessage());
@@ -110,8 +120,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<User> getUsers() {
-        logger.info("Retrieving all users from database!");
-        return userRepository.findAll();
+        List<User> users = null;
+        try {
+            users = userRepository.findAll();
+            logger.info("Retrieved {} users from database! ", users.size());
+        } catch (Exception exception){
+            logger.info("Error while fetching users: {} ", exception.getMessage());
+        }
+        return users;
     }
 
 

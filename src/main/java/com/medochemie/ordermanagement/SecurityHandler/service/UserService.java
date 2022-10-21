@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User saveUser(User user, String agentId);
+    User saveUser(User user);
     Role saveRole(Role role);
     void addRoleToUser(String userName, String roleName);
     User getUser(String userName);

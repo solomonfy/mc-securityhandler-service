@@ -59,14 +59,14 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<User> saveUser(@RequestBody User user, String agentId){
-        System.out.println("Trying to save user!");
+    public ResponseEntity<User> saveUser(@RequestBody User user){
+
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path(Constant.USER_CONTROLLER_END_POINT+ "/save")
                 .toUriString());
         System.out.println(uri);
-        return ResponseEntity.created(uri).body(userService.saveUser(user, agentId));
+        return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
     @PostMapping("/save/role")
