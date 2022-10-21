@@ -22,20 +22,20 @@ public class User {
     private String emailId;
     private String userName;
     private String password;
-//    private String phone;
     private Collection<Role> roles;
-//    private String profileImageUrl;
-//    private boolean isActive;
-//    private boolean isNotLocked;
-//    private String agentId;
-//    private String countryCode;
-//    private String createdBy;
-//    private Date joinDate;
-//    private Date createdOn;
-//    private String updatedBy;
-//    private Date updatedOn;
-//    private Date lastLoginDate;
-//    private Date lastLoginDateDisplay;
+    private String phone;
+    private String profileImageUrl;
+    private boolean isActive;
+    private boolean isNotLocked;
+    private String agentId;
+    private String countryCode;
+    private String createdBy;
+    private Date joinDate;
+    private Date createdOn;
+    private String updatedBy;
+    private Date updatedOn;
+    private Date lastLoginDate;
+    private Date lastLoginDateDisplay;
 
 //    public void setEmailId() {
 //        this.emailId = this.firstName + "." + this.lastName + "@" + this.countryCode+ ".@medochemie.com";
