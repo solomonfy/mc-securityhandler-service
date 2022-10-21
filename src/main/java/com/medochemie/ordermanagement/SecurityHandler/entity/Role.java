@@ -19,10 +19,10 @@ public class Role {
     @Id
     private String id;
     private String roleName;
-//    private String description;
-//    private boolean isActive;
-//    private Date createdOn;
-//    private String createBy;
-//    private String updatedBy;
-//    private Date updatedOn;
+    private String description;
+    private boolean isActive;
+    private Date createdOn;
+    private String createBy;
+    private String updatedBy;
+    private Date updatedOn;
 }
