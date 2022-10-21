@@ -4,11 +4,11 @@ import com.medochemie.ordermanagement.SecurityHandler.entity.Role;
 import com.medochemie.ordermanagement.SecurityHandler.entity.User;
 import com.medochemie.ordermanagement.SecurityHandler.repository.RoleRepository;
 import com.medochemie.ordermanagement.SecurityHandler.repository.UserRepository;
+import com.medochemie.ordermanagement.SecurityHandler.service.GenerateEmail;
 import com.medochemie.ordermanagement.SecurityHandler.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,10 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 
@@ -54,12 +51,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
-//        if(user == null) return null;
+    public User saveUser(User user, String agentId) {
+        //Get agentId from the loggedIn user or admin
+
+        if(user == null) logger.info("User is null and can't be saved");
         logger.info("Saving new user to database {} ", user.getUserName());
         try{
             //Need to encode the password before saving to db
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+            //Default values for new user
+            user.setActive(true);
+            Optional<Role> roleOptional = roleRepository.findById("635188fa4806844f891f533a");
+            Role role = roleOptional.get();
+            user.getRoles().add(role);
+
+            //Generate email
+            user.setEmailId(GenerateEmail.generateEmail(user.getFirstName(), user.getLastName()));
             userRepository.save(user);
         } catch (Exception exception){
             logger.info(exception.getMessage());
