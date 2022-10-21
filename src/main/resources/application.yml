@@ -1,0 +1,15 @@
+
+
+jwt:
+  secret: '[z0-qtganhdvkiq4576._=-]%6^bsvjsnbfavcdb#4fcf@5%7&1!23bakjysvjmi'
+
+server:
+  port: 1010
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/medochemie
+      auto-index-creation: true
+  application:
+    name: MC-SECURITY-HANDLER
