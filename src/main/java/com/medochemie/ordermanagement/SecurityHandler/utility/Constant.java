@@ -1,4 +1,4 @@
-package com.medochemie.ordermanagement.SecurityHandler.utilities;
+package com.medochemie.ordermanagement.SecurityHandler.utility;
 
 public class Constant {
 

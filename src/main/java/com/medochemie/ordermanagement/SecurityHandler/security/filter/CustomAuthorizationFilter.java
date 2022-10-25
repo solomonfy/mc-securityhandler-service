@@ -22,8 +22,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.medochemie.ordermanagement.SecurityHandler.utilities.Constant.LOG_IN_URL;
-import static com.medochemie.ordermanagement.SecurityHandler.utilities.Constant.USER_CONTROLLER_END_POINT;
+import static com.medochemie.ordermanagement.SecurityHandler.utility.Constant.LOG_IN_URL;
+import static com.medochemie.ordermanagement.SecurityHandler.utility.Constant.USER_CONTROLLER_END_POINT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

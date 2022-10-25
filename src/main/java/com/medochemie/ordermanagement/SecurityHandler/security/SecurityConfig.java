@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.medochemie.ordermanagement.SecurityHandler.utilities.Constant.LOG_IN_URL;
-import static com.medochemie.ordermanagement.SecurityHandler.utilities.Constant.USER_CONTROLLER_END_POINT;
+import static com.medochemie.ordermanagement.SecurityHandler.utility.Constant.LOG_IN_URL;
+import static com.medochemie.ordermanagement.SecurityHandler.utility.Constant.USER_CONTROLLER_END_POINT;
 
 @Configuration
 @EnableWebSecurity

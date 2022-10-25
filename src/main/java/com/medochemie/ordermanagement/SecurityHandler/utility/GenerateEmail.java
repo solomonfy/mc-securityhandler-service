@@ -1,4 +1,4 @@
-package com.medochemie.ordermanagement.SecurityHandler.service;
+package com.medochemie.ordermanagement.SecurityHandler.utility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

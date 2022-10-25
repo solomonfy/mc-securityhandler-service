@@ -8,16 +8,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medochemie.ordermanagement.SecurityHandler.entity.Role;
 import com.medochemie.ordermanagement.SecurityHandler.entity.User;
 import com.medochemie.ordermanagement.SecurityHandler.service.UserService;
-import com.medochemie.ordermanagement.SecurityHandler.utilities.Constant;
+import com.medochemie.ordermanagement.SecurityHandler.utility.Constant;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -58,15 +54,15 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<User> saveUser(@RequestBody User user){
+    @PostMapping("/{agentId}/save")
+    public ResponseEntity<User> saveUser(@RequestBody User user, @PathVariable String agentId){
 
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path(Constant.USER_CONTROLLER_END_POINT+ "/save")
+                .path(Constant.USER_CONTROLLER_END_POINT + "/" + agentId + "/save")
                 .toUriString());
         System.out.println(uri);
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        return ResponseEntity.created(uri).body(userService.saveUser(user, agentId));
     }
 
     @PostMapping("/save/role")
@@ -78,7 +74,7 @@ public class UserController {
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
 
-    @PostMapping("/role/addtouser")
+    @PostMapping("/role/addRoleToUser")
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form){
         String userName = form.getUserName();
         String roleName = form.getRoleName();

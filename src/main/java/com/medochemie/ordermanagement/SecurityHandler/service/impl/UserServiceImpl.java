@@ -4,7 +4,7 @@ import com.medochemie.ordermanagement.SecurityHandler.entity.Role;
 import com.medochemie.ordermanagement.SecurityHandler.entity.User;
 import com.medochemie.ordermanagement.SecurityHandler.repository.RoleRepository;
 import com.medochemie.ordermanagement.SecurityHandler.repository.UserRepository;
-import com.medochemie.ordermanagement.SecurityHandler.service.GenerateEmail;
+import com.medochemie.ordermanagement.SecurityHandler.utility.GenerateEmail;
 import com.medochemie.ordermanagement.SecurityHandler.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,8 +21,8 @@ import java.util.*;
 
 @Service
 
-//to inject the fields (for dependency injection)
-@RequiredArgsConstructor
+
+@RequiredArgsConstructor //to inject the fields (for dependency injection)
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         User user = userRepository.findByUserName(userName);
         if(user == null) {
-            logger.info("User not found in the database: {} ", userName);
-            throw new UsernameNotFoundException("User not found in the database");
+            logger.info("UserVO not found in the database: {} ", userName);
+            throw new UsernameNotFoundException("UserVO not found in the database");
         }
         else{
-            logger.info("User found in the database: {} ", userName);
+            logger.info("UserVO found in the database: {} ", userName);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : user.getRoles()) {
@@ -51,21 +51,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
-        //Get agentId from the loggedIn user or admin
+    public User saveUser(User user, String agentId) {
+        Collection<Role> roles = new ArrayList<>();
+        Role role = roleRepository.findById("6261665447a2327f3c5d3b38").orElse(null);
 
-        if(user == null) logger.info("User is null and can't be saved");
+        if(user == null || agentId.isEmpty()) logger.info("User/countryCode is null hence user can't be created");
         try{
         logger.info("Saving new user to database {} ", user.getUserName());
+            //Get countryCode from the loggedIn user as a request parameter
+            user.setAgentId(agentId);
+
             //Need to encode the password before saving to db
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             //Default values for new user
             //Generate email
             user.setEmailId(GenerateEmail.generateEmail(user.getFirstName(), user.getLastName()));
-//            Optional<Role> roleOptional = roleRepository.findById("635188fa4806844f891f533a");
-//            Role role = roleOptional.get();
-//                System.out.println(role.getRoleName());
-//            user.getRoles().add(role);
+            roles.add(role);
+            user.setRoles(roles);
             user.setActive(true);
             user.setNotLocked(true);
             user.setPhone("");
@@ -123,6 +125,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<User> users = null;
         try {
             users = userRepository.findAll();
+//            users = userRepository.findAll();
             logger.info("Retrieved {} users from database! ", users.size());
         } catch (Exception exception){
             logger.info("Error while fetching users: {} ", exception.getMessage());
